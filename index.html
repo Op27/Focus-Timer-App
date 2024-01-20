@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concentration App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+          font-family: 'Roboto', sans-serif; 
+          margin: 0;
+          padding: 0;
+          background-color: #000000;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100vw;
+          overflow: hidden;            
+      }
+
+      #app {
+          background-color: #2F4F4F;
+          border-radius: 10px;
+          padding: 20px;
+          width: 27%;
+          max-width: 800px;
+          min-height: 400px; 
+          height: auto; 
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+          padding-bottom: 120px;
+      }
+
+
+        #app::-webkit-scrollbar {
+        display: none;            
+        }
+
+        #logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 39px;
+            padding-bottom: 20px;
+            margin-top: 20px; /* Increased margin-top */
+            margin-bottom: 3px;
+            height: auto; 
+        }
+
+        #logo {
+            height: 5; 
+            width: auto;
+            transform: scale(1);
+            margin-top: initial;
+        }
+
+        #timer-display {
+            color: #ffffff;
+            font-size: 4rem;
+            margin: 10px 0;
+            margin-top: 3px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 1px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: #DAA520;
+            color: #2F4F4F;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 700;
+            margin: 0 10px;
+            flex: 1; 
+            margin: 5px; 
+            min-width: 100px;
+        }
+
+        #settings-button {
+            background-color: #9B9B9B;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        #p5js-canvas {
+            background-color: #9B9B9B;
+            width: 100%; 
+            height: 160px; 
+            margin: 15px auto;
+            border-radius: 5px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        #sound-settings {
+        position: relative;
+        text-align: center;
+        margin-top: 20px;
+        }
+
+        #volume-control {
+            width: 80%;
+            margin: 10px 0;
+        }
+
+        #mute-button {
+            background-color: #DAA520;
+            color: #2F4F4F;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        #settings-overlay {
+          position: fixed;
+          display: none; 
+          top: 0;
+          left: 0;
+          right: 0; 
+          bottom: 0; 
+          background-color: rgba(0, 0, 0, 0.5);
+          justify-content: center;
+          align-items: center;
+      }
+
+        #sound-settings {
+            position: relative;
+            background-color: #2F4F4F;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 100;       
+            margin: auto;
+        }
+        
+        #close-x-button {
+            position: absolute;
+            top: 1px; 
+            right: 1px; 
+            border: none; 
+            background: none; 
+            color: white; 
+            font-size: 20px; 
+            cursor: pointer; 
+            padding: 5px 10px; 
+            z-index: 101; 
+        }
+
+        #credit-section {
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding: 2.6px 0; 
+            font-size: 0.35rem; 
+            border-top: 1px solid #DAA520; 
+            padding-bottom: 6px;
+        }
+
+
+        @media (max-width: 480px) {
+          #app {
+              width: 80%; 
+              flex-wrap: wrap; 
+              padding: 5px; 
+          }
+          #logo-container, #timer-display, .button-container, #p5js-canvas, #credit-section {
+              width: 100%; 
+              align-items: center;
+              justify-content: center;
+          }
+          #logo {
+              max-height: 20px; 
+          }
+          .button-container button {
+              padding: 5px; 
+              min-width: 60px; 
+          }
+          #p5js-canvas {
+              height: 120px; 
+          }
+          #credit-section {
+              font-size: 0.3rem; 
+          }
+      }
+
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="logo-container"></div>
+            <img src="images/logo.png" alt="Logo" id="logo" style="max-height: 66px;"> 
+        <div id="timer-display">00:00</div>
+        <div class="button-container">
+            <button id="start-button">Start</button>
+            <button id="pause-button">Pause</button>
+            <button id="finish-button">Finish</button>
+        </div>        
+        <button id="settings-button">Settings</button>        
+        <div id="p5js-canvas"></div> 
+        <div id="credit-section">
+          Created by Daigo Takagi
+      </div>
+        <div id="settings-overlay" style="display: none;">
+            <div id="sound-settings" style="display: none;">
+                <button id="close-x-button" onclick="closeSettings()">X</button> 
+                <label for="volume-control">Volume:</label>
+                <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1">
+                <button id="mute-button">Mute</button> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- p5.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <audio id="ding-sound" src="ding.mp3" preload="auto"></audio>
+    <audio id="40hz-sound" src="40hz-sound.mp3" preload="auto" loop></audio>
+
+    <script>
+        class Particle {
+          constructor(x, y, isForAnimation2 = false, isSurrounding = false, targetPillar = null) {
+              this.x = x;
+              this.y = y;
+              this.size = isForAnimation2 ? (isSurrounding ? 1 : 2) : random(0.5, 1.5); // Size logic for both animations
+              this.color = 'lightyellow';
+              this.isForAnimation2 = isForAnimation2;
+              this.isSurrounding = isSurrounding;
+              this.targetPillar = targetPillar || (isForAnimation2 ? int(random(3)) : null);
+              this.angle = isSurrounding ? random(TWO_PI) : null;
+              this.verticalMovement = isSurrounding ? (random(1) < 0.5 ? -1 : 1) : null;
+          }
+
+            float() {
+              if (!this.isForAnimation2) {
+                  this.x += random(-1, 1);
+                  this.y += random(-1, 1);
+                  this.x = constrain(this.x, 0, width);
+                  this.y = constrain(this.y, 0, height);
+              }
+          }
+          moveAndFormPillar() {
+            if (this.isForAnimation2 && !this.isSurrounding) {
+                let pillarBaseX = width / 4 * (this.targetPillar + 1);
+                this.x += (pillarBaseX - this.x) * 0.01;
+                if (this.y > 0) {
+                    this.y -= random(0.5, 1.5);
+                } else {
+                    this.x = random(width);
+                    this.y = height;
+                }
+            }
+        }
+        alignWithPillars() {
+            if (this.isForAnimation2 && this.isSurrounding) {
+                let pillarBaseX = width / 4 * (this.targetPillar + 1);
+                this.x = pillarBaseX + (this.verticalMovement * 10);
+                this.y += this.verticalMovement * 2;
+                if (this.y <= 0 || this.y >= height) {
+                    this.verticalMovement *= -1;
+                }
+            }
+        }
+            // Function to display the particle
+            show() {
+                noStroke();
+                fill(this.color);
+                circle(this.x, this.y, this.size);
+            }
+}
+
+            let particles = [];
+            let showAnimation1 = true; // Variable to toggle between animations
+
+            function setup() {
+              let canvas = createCanvas(windowWidth * 0.27, 180);
+              canvas.parent('p5js-canvas');
+              background(0);
+
+              // Initialize particles for animation1
+              for (let i = 0; i < 10000; i++) {
+                  particles.push(new Particle(random(width), random(height)));
+              }
+
+              // Initialize particles for animation2
+              for (let i = 0; i < 10000; i++) {
+                  // Set 'isForAnimation2' to true for animation2 particles
+                  particles.push(new Particle(random(width), random(height), true));
+              }
+          }
+
+
+            function windowResized() {
+                resizeCanvas(windowWidth * 0.27, 180); // Resize canvas when the window is resized
+            }
+            
+            let surroundingParticles = [];
+            let frameThreshold = 30; // 5 seconds at 60 frames per second
+            let animation2FrameCount = 0;
+
+            function draw() {
+              if (showAnimation1) {
+                  // Animation1 logic
+                  background(0, 25);
+                  particles.forEach(p => {
+                      if (!p.isForAnimation2) {
+                          p.float();
+                          p.show();
+                      }
+                  });
+              } else {
+                  // Animation2 logic
+                  if (showAnimation1 || isAnimation2Paused) return;
+                  background(0); 
+                  if (frameCount % 20 === 0) { // Add new particles less frequently
+                      let targetPillar = int(random(3));
+                      surroundingParticles.push(new Particle(random(width), random(height), true, true, targetPillar));
+                  }
+
+                  particles.forEach(p => {
+                      if (p.isForAnimation2) {
+                          p.moveAndFormPillar();
+                          p.show();
+                      }
+                  });
+
+                  surroundingParticles.forEach(p => {
+                      p.alignWithPillars();
+                      p.show();
+                  });
+              }
+            }
+
+            
+            function animation2() {
+                background(100); 
+            }
+
+            function updateVolume() {
+                let volume = document.getElementById('volume-control').value;
+                document.getElementById('ding-sound').volume = volume;
+                document.getElementById('40hz-sound').volume = volume;
+            }
+
+            document.getElementById('volume-control').addEventListener('input', updateVolume);
+            
+            let isMuted = false;
+
+            function toggleMute() {
+                isMuted = !isMuted;
+                document.getElementById('ding-sound').muted = isMuted;
+                document.getElementById('40hz-sound').muted = isMuted;
+                document.getElementById('mute-button').textContent = isMuted ? 'Unmute' : 'Mute';
+            }
+            document.getElementById('mute-button').addEventListener('click', toggleMute);
+            
+            function closeSettings() {
+            document.getElementById('settings-overlay').style.display = 'none';
+        }
+// Define the timer control variables and functions
+let timerIntervals = [];
+let currentIntervalIndex = 0;
+let currentTimer = null;
+let timerRunning = false;
+let timerID;
+
+function addInterval(seconds) {
+    timerIntervals.push(seconds);
+}
+
+isAnimation2Paused = false;
+
+function startTimers() {
+    if (timerIntervals.length === 0 || timerRunning) {
+        console.error("No intervals set or timer already running");
+        return;
+    }
+    timerRunning = true;
+    currentIntervalIndex = 0;
+    startNextInterval();
+}
+
+function startNextInterval() {
+    if (currentIntervalIndex < timerIntervals.length) {
+        currentTimer = timerIntervals[currentIntervalIndex];
+        updateDisplay(currentTimer);
+        
+        if (currentTimer === 1500) { // assuming 1500 seconds (25 minutes)
+            document.getElementById('40hz-sound').play();
+        }
+
+        runTimer();
+    } else {
+        console.log("All intervals completed.");
+        timerRunning = false;
+        document.getElementById('40hz-sound').pause(); 
+        document.getElementById('40hz-sound').currentTime = 0;
+    }
+}
+
+function runTimer() {
+    if (currentTimer > 0) {
+        timerID = setTimeout(function() {
+            currentTimer--;
+            updateDisplay(currentTimer);
+            runTimer();
+        }, 1000);
+    } else {
+        document.getElementById('ding-sound').play(); 
+        currentIntervalIndex++;
+        if (currentIntervalIndex < timerIntervals.length) {
+            startNextInterval();
+        } else {
+            timerRunning = false;
+        }
+    }
+}
+
+function pauseTimer() {
+    clearTimeout(timerID);
+    timerRunning = false;
+    document.getElementById('40hz-sound').pause(); 
+}
+
+function resetTimer() {
+    clearTimeout(timerID);
+    currentIntervalIndex = 0;
+    currentTimer = null;
+    timerRunning = false;
+    updateDisplay(0);
+    document.getElementById('ding-sound').play();
+    document.getElementById('40hz-sound').pause();
+    document.getElementById('40hz-sound').currentTime = 0;
+}
+
+function updateDisplay(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let remSeconds = seconds % 60;
+    document.getElementById('timer-display').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${remSeconds.toString().padStart(2, '0')}`;
+}
+
+// Set up event listeners after the document has fully loaded
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('start-button').addEventListener('click', () => {
+        showAnimation1 = false; // Switch to animation2
+        isAnimation2Paused = false; // Ensure animation2 is not paused
+        surroundingParticles = []; // Clear the surrounding particles
+        particles = particles.filter(p => !p.isForAnimation2); // Remove animation2 particles
+        for (let i = 0; i < 10000; i++) {
+            particles.push(new Particle(random(width), random(height), true));
+        }
+        startTimers();        
+    });
+    
+    document.getElementById('pause-button').addEventListener('click', () => {
+    isAnimation2Paused = !isAnimation2Paused;
+    if (isAnimation2Paused) {
+        pauseTimer();
+        document.getElementById('40hz-sound').pause(); // Pause the 40Hz sound
+    } else {
+        // Code to resume the timer or sound (if needed)
+    }
+    });
+    
+    document.getElementById('finish-button').addEventListener('click', () => {
+    showAnimation1 = true; // Switch back to animation1
+    resetTimer();
+    surroundingParticles = []; // Clear the surrounding particles
+    // Reset animation2 particles
+    particles = particles.filter(p => !p.isForAnimation2); // Remove animation2 particles
+    // Reinitialize particles for animation2
+    for (let i = 0; i < 10000; i++) {
+        // Set 'isForAnimation2' to true for animation2 particles
+        particles.push(new Particle(random(width), random(height), true));
+    }
+    });
+
+    // Initialize intervals
+    addInterval(25 * 60); // 25-minute interval
+    addInterval(5 * 60);  // 5-minute interval
+});  
+function toggleSoundSettings() {
+    var settingsOverlay = document.getElementById('settings-overlay');
+    var soundSettings = document.getElementById('sound-settings');
+    var isDisplayed = soundSettings.style.display === 'none';
+    settingsOverlay.style.display = isDisplayed ? 'flex' : 'none';
+    soundSettings.style.display = isDisplayed ? 'block' : 'none';
+}
+document.getElementById('settings-button').addEventListener('click', toggleSoundSettings);
+
+    </script>
+</body>
+</html>
