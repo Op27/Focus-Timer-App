@@ -47,7 +47,7 @@
             align-items: center;
             padding-top: 39px;
             padding-bottom: 20px;
-            margin-top: 20px; /* Increased margin-top */
+            margin-top: 20px; 
             margin-bottom: 3px;
             height: auto; 
         }
@@ -246,7 +246,7 @@
           constructor(x, y, isForAnimation2 = false, isSurrounding = false, targetPillar = null) {
               this.x = x;
               this.y = y;
-              this.size = isForAnimation2 ? (isSurrounding ? 1 : 2) : random(0.5, 1.5); // Size logic for both animations
+              this.size = isForAnimation2 ? (isSurrounding ? 1 : 2) : random(0.5, 1.5); 
               this.color = 'lightyellow';
               this.isForAnimation2 = isForAnimation2;
               this.isSurrounding = isSurrounding;
@@ -294,7 +294,7 @@
 }
 
             let particles = [];
-            let showAnimation1 = true; // Variable to toggle between animations
+            let showAnimation1 = true; 
 
             function setup() {
               let canvas = createCanvas(windowWidth * 0.27, 180);
@@ -315,11 +315,11 @@
 
 
             function windowResized() {
-                resizeCanvas(windowWidth * 0.27, 180); // Resize canvas when the window is resized
+                resizeCanvas(windowWidth * 0.27, 180); 
             }
             
             let surroundingParticles = [];
-            let frameThreshold = 30; // 5 seconds at 60 frames per second
+            let frameThreshold = 30; 
             let animation2FrameCount = 0;
 
             function draw() {
@@ -336,7 +336,7 @@
                   // Animation2 logic
                   if (showAnimation1 || isAnimation2Paused) return;
                   background(0); 
-                  if (frameCount % 20 === 0) { // Add new particles less frequently
+                  if (frameCount % 20 === 0) { 
                       let targetPillar = int(random(3));
                       surroundingParticles.push(new Particle(random(width), random(height), true, true, targetPillar));
                   }
@@ -468,20 +468,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     customTime = Math.max(1, Math.min(120, customTime)); // Ensure the custom time is valid
     var customTimeInSeconds = customTime * 60;
 
-    timerIntervals = []; // Clear any existing intervals
-    addInterval(customTimeInSeconds); // Add the custom time interval
+    timerIntervals = []; 
+    addInterval(customTimeInSeconds); 
 
-    // Optionally, adjust or remove the condition for playing the 40hz-sound here
-
-    toggleSoundSettings(); // Close the settings overlay
-    alert('Timer set to ' + customTime + ' minutes.'); // Optional feedback
+    toggleSoundSettings(); 
+    alert('Timer set to ' + customTime + ' minutes.'); 
     });
 
     document.getElementById('start-button').addEventListener('click', () => {
-        showAnimation1 = false; // Switch to animation2
-        isAnimation2Paused = false; // Ensure animation2 is not paused
-        surroundingParticles = []; // Clear the surrounding particles
-        particles = particles.filter(p => !p.isForAnimation2); // Remove animation2 particles
+        showAnimation1 = false; 
+        isAnimation2Paused = false; 
+        surroundingParticles = []; 
+        particles = particles.filter(p => !p.isForAnimation2); 
         for (let i = 0; i < 10000; i++) {
             particles.push(new Particle(random(width), random(height), true));
         }
@@ -493,21 +491,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     isAnimation2Paused = !isAnimation2Paused;
     if (isAnimation2Paused) {
         pauseTimer();
-        document.getElementById('40hz-sound').pause(); // Pause the 40Hz sound
+        document.getElementById('40hz-sound').pause(); 
     } else {
-        // Code to resume the timer or sound (if needed)
+  
     }
     });
     
     document.getElementById('finish-button').addEventListener('click', () => {
-    showAnimation1 = true; // Switch back to animation1
+    showAnimation1 = true; 
     resetTimer();
-    surroundingParticles = []; // Clear the surrounding particles
-    // Reset animation2 particles
-    particles = particles.filter(p => !p.isForAnimation2); // Remove animation2 particles
-    // Reinitialize particles for animation2
-    for (let i = 0; i < 10000; i++) {
-        // Set 'isForAnimation2' to true for animation2 particles
+    surroundingParticles = [];     
+    particles = particles.filter(p => !p.isForAnimation2);     
+    for (let i = 0; i < 10000; i++) {        
         particles.push(new Particle(random(width), random(height), true));
     }
     });
