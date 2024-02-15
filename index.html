@@ -225,6 +225,12 @@
                 <label for="volume-control">Volume:</label>
                 <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1">
                 <button id="mute-button">Mute</button> 
+                <div id="custom-timer-settings">
+                    <label for="custom-timer-input">Custom Timer (minutes):</label>
+                    <input type="number" id="custom-timer-input" min="1" max="120" value="25">
+                    <button id="custom-timer-set-button">Set Timer</button>
+                </div>
+                
           </div>
         </div>
       </div>
@@ -402,10 +408,7 @@ function startNextInterval() {
     if (currentIntervalIndex < timerIntervals.length) {
         currentTimer = timerIntervals[currentIntervalIndex];
         updateDisplay(currentTimer);
-        
-        if (currentTimer === 1500) { // assuming 1500 seconds (25 minutes)
-            document.getElementById('40hz-sound').play();
-        }
+               
 
         runTimer();
     } else {
@@ -460,6 +463,20 @@ function updateDisplay(seconds) {
 
 // Set up event listeners after the document has fully loaded
 document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('custom-timer-set-button').addEventListener('click', function() {
+    var customTime = document.getElementById('custom-timer-input').value;
+    customTime = Math.max(1, Math.min(120, customTime)); // Ensure the custom time is valid
+    var customTimeInSeconds = customTime * 60;
+
+    timerIntervals = []; // Clear any existing intervals
+    addInterval(customTimeInSeconds); // Add the custom time interval
+
+    // Optionally, adjust or remove the condition for playing the 40hz-sound here
+
+    toggleSoundSettings(); // Close the settings overlay
+    alert('Timer set to ' + customTime + ' minutes.'); // Optional feedback
+    });
+
     document.getElementById('start-button').addEventListener('click', () => {
         showAnimation1 = false; // Switch to animation2
         isAnimation2Paused = false; // Ensure animation2 is not paused
@@ -468,7 +485,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         for (let i = 0; i < 10000; i++) {
             particles.push(new Particle(random(width), random(height), true));
         }
-        startTimers();        
+        startTimers();
+        document.getElementById('40hz-sound').play();
     });
     
     document.getElementById('pause-button').addEventListener('click', () => {
@@ -501,7 +519,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 function toggleSoundSettings() {
     var settingsOverlay = document.getElementById('settings-overlay');
     var soundSettings = document.getElementById('sound-settings');
-    var isDisplayed = soundSettings.style.display === 'none';
+    var isDisplayed = soundSettings.style.display === 'none' || soundSettings.style.display === '';
     settingsOverlay.style.display = isDisplayed ? 'flex' : 'none';
     soundSettings.style.display = isDisplayed ? 'block' : 'none';
 }
