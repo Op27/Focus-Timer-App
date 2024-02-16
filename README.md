@@ -7,8 +7,8 @@ https://github.com/Op27/Focus-Timer-App/assets/39921621/0fbdc4d8-d059-44c9-955a-
 Focus-Timer-App is a dynamic Pomodoro timer with unique features designed for optimal focus and performance. It combines the effectiveness of the Pomodoro technique with elements like 40Hz sound enhancement and engaging animations to help users maintain concentration and enhance their productivity.
 
 ## Features
-- **Pomodoro Timer**: Efficient time management using the Pomodoro technique.
-- **40Hz Sound Enhancement**: An optional background sound tuned to 40Hz, known to assist in focusing and enhancing cognitive performance.
+- **Pomodoro Timer**: A function for efficient time management using the Pomodoro technique, which is customizable in the "Settings" page.
+- **40Hz Sound Enhancement**: An optional background sound tuned to 40Hz, known to assist in focusing and enhancing cognitive performance. It can be muted in the "Settings" page.
 - **Focus-Enhancing Animations**: Visually soothing animations that help maintain focus during Pomodoro sessions.
 - **Customizable Settings**: Users can adjust volume, mute sounds, and configure timer intervals.
 
