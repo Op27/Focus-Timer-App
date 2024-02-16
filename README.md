@@ -1,5 +1,8 @@
 # Focus-Timer-App
 
+## Demo video
+https://github.com/Op27/Focus-Timer-App/assets/39921621/0fbdc4d8-d059-44c9-955a-ae78c9f4cd94
+
 ## Introduction
 Focus-Timer-App is a dynamic Pomodoro timer with unique features designed for optimal focus and performance. It combines the effectiveness of the Pomodoro technique with elements like 40Hz sound enhancement and engaging animations to help users maintain concentration and enhance their productivity.
 
